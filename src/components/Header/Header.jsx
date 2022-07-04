@@ -1,11 +1,12 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import classes from './Header.module.scss'
 import {Link} from "react-router-dom";
-import {AppContext} from "../../App";
+
+import {useDispatch, useSelector} from "react-redux";
 
 const Header = ({onShowCart}) => {
-    const {cartItems} = useContext(AppContext)
-    const total = cartItems.reduce((accum, obj) => Number(obj.price) + accum, 0)
+    const {totalPrice } = useSelector(state => state.cart)
+    const dispatch = useDispatch()
     return (
         <div className={classes.header}>
             <header className="d-flex justify-between align-center p-40">
@@ -22,7 +23,7 @@ const Header = ({onShowCart}) => {
                     <ul className="d-flex">
                         <li onClick={onShowCart}>
                             <img src="/img/cart.svg" alt="Cart"/>
-                            <b className="mr-15">{total} ₴</b>
+                            <b className="mr-15">{totalPrice} ₴</b>
                         </li>
                         <Link to="/favorite">
                             <li>

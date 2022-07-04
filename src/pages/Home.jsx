@@ -1,10 +1,9 @@
 import React from 'react';
 import Card from "../components/Card/Card";
 import Loader from "../components/Loader/Loader";
-
+import {useSelector} from "react-redux";
 const Home = ({
                   isLoading,
-                  items,
                   searchValue,
                   setSearchValue,
                   addToFavorite,
@@ -12,8 +11,7 @@ const Home = ({
                   addToCart
               }) => {
 
-
-
+    const {items} = useSelector(state => state.balls)
     return (
         <div className="content p-40">
             <div className="d-flex align-center justify-between mb-40">

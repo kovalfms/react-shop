@@ -1,10 +1,9 @@
 import Card from "../components/Card/Card";
-import {useContext} from "react";
-import {AppContext} from "../App";
+import {useSelector} from "react-redux";
 
 
 const Favorite = () => {
-    const {favoriteItems, addToFavorite, addToCart} = useContext(AppContext);
+    const {favoriteItems} = useSelector(state => state.balls);
     return (
         <div className="content p-40">
             <div className="d-flex align-center justify-between mb-40">
@@ -14,9 +13,6 @@ const Favorite = () => {
                 {favoriteItems.map((item, i) =>
                     <Card
                         key={i}
-                        favorite
-                        addToCart={addToCart}
-                        onFavorite={addToFavorite}
                         {...item}
                     />
                 )}
