@@ -11,7 +11,7 @@ const Orders = () => {
 
         useEffect(() => {
             dispatch(fetchOrders())
-        }, []);
+        }, [dispatch]);
 
         return (
             <div className="content p-40">

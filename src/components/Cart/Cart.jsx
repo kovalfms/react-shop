@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import classes from './Cart.module.scss'
-
+import axios from "axios";
 import Info from "../Info";
 import {useDispatch, useSelector} from "react-redux";
-import {addToOrders, removeAllCartItemsAction} from "../../redux/reducers/cartReducer";
-import {fetchAddToOrders, fetchDeleteItem} from "../../redux/asyncActions/cart";
+import {removeAllCartItemsAction} from "../../redux/reducers/cartReducer";
+import {fetchDeleteItem} from "../../redux/asyncActions/cart";
+
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -12,17 +13,17 @@ const Cart = ({onClose, onRemove}) => {
     const {cartItems, totalPrice} = useSelector(state => state.cart)
     const [orderComplete, setOrderComplete] = useState(false)
     const [orderId, setOrderId] = useState(null)
-
+    console.log(cartItems)
     const dispatch = useDispatch()
 
     const onClickOrder = async () => {
         try {
-            dispatch(fetchAddToOrders({
+            const {data} = await axios.post('https://628e3538a339dfef87a9b8cb.mockapi.io/orders', {
                 items: cartItems
-            }))
-            setOrderId(cartItems.id)
-            setOrderComplete(true)
+            })
+            setOrderId(data.id)
             dispatch(removeAllCartItemsAction())
+            setOrderComplete(true)
 
             for (let i = 0; i < cartItems.length; i++) {
                 const item = cartItems[i]
@@ -67,7 +68,7 @@ const Cart = ({onClose, onRemove}) => {
                                     <li>
                                         <span>Tax 10%:</span>
                                         <div/>
-                                        <b>{totalPrice * 0.1} </b>
+                                        <b>{Math.floor(totalPrice * 0.1)} </b>
                                     </li>
                                 </ul>
                                 <button

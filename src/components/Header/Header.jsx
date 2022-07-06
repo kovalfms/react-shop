@@ -2,11 +2,10 @@ import React from 'react';
 import classes from './Header.module.scss'
 import {Link} from "react-router-dom";
 
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 const Header = ({onShowCart}) => {
     const {totalPrice } = useSelector(state => state.cart)
-    const dispatch = useDispatch()
     return (
         <div className={classes.header}>
             <header className="d-flex justify-between align-center p-40">

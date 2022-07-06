@@ -1,10 +1,11 @@
 import axios from "axios";
 import {
-    addToCartAction, addToOrders, addToOrdersAction,
+    addToCartAction,
+    addToOrdersAction,
     getCartItemsAction,
     getOrdersAction,
     getTotalPriceAction,
-    removeCartItemAction
+    removeCartItemAction, removeItemAction
 } from "../reducers/cartReducer";
 
 export const fetchCart = () => {
@@ -23,6 +24,8 @@ export const fetchAddToCart = (obj) => {
         try {
             await axios.post(`https://628e3538a339dfef87a9b8cb.mockapi.io/cart`, obj);
             await dispatch(addToCartAction(obj))
+            await dispatch(getTotalPriceAction())
+            console.log(obj)
         } catch (e) {
             console.error(e)
         }
@@ -32,7 +35,21 @@ export const fetchDeleteItem = (id) => {
     return async dispatch => {
         try {
             await axios.delete(`https://628e3538a339dfef87a9b8cb.mockapi.io/cart/${id}`);
+            await dispatch(removeItemAction(id))
+            await dispatch(getTotalPriceAction())
+            console.log(id)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+}
+export const fetchDeleteCartItem = (id) => {
+    return async dispatch => {
+        try {
+            await axios.delete(`https://628e3538a339dfef87a9b8cb.mockapi.io/cart/${id}`);
             await dispatch(removeCartItemAction(id))
+            await dispatch(getTotalPriceAction())
+            console.log(id)
         } catch (e) {
             console.error(e)
         }
@@ -52,8 +69,10 @@ export const fetchOrders = () => {
 export const fetchAddToOrders = () => {
     return async dispatch => {
         try {
-            const {data} = await axios.post('https://628e3538a339dfef87a9b8cb.mockapi.io/orders');
-            await dispatch(addToOrdersAction(data))
+            const {data} = await axios.post('https://628e3538a339dfef87a9b8cb.mockapi.io/orders', {
+                items: getCartItemsAction()
+            });
+            await dispatch(addToOrdersAction(data.id))
             await dispatch(removeCartItemAction())
         } catch (e) {
             console.error(e)

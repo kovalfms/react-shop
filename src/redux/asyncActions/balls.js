@@ -39,11 +39,11 @@ export const fetchAddToFavorites = (obj) => {
     }
 }
 
-export const fetchDeleteFromFavorites = (obj) => {
+export const fetchDeleteFromFavorites = (id) => {
     return async dispatch => {
         try {
-            await axios.delete(`https://628e3538a339dfef87a9b8cb.mockapi.io/favorite/${obj.id}`)
-            dispatch(removeItemFromFavoritesAction(obj.id))
+            await axios.delete(`https://628e3538a339dfef87a9b8cb.mockapi.io/favorite/${id}`)
+            dispatch(removeItemFromFavoritesAction(id))
         } catch (e) {
             console.log(e)
         }

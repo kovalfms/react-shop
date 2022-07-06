@@ -33,15 +33,16 @@ function App() {
 
     }, [])
 
-    const addToCart = (obj) => {
+    const addToCart = async (obj) => {
         const findItem = cartItems.find((item) => item.parentId === obj.id)
         if (findItem) {
+            // setCartItems((prev) => prev.filter(item => item.parentId !== obj.id))
+            // await axios.delete(`https://628e3538a339dfef87a9b8cb.mockapi.io/cart/${findItem.id}`);
             dispatch(fetchDeleteItem(findItem.id))
         } else {
             dispatch(fetchAddToCart(obj))
 
         }
-
     }
 
     const onRemoveItem = (id) => {
@@ -49,8 +50,9 @@ function App() {
     }
 
     const addToFavorite = (obj) => {
-        if (favoriteItems.find((favObj) => favObj.id === obj.id)) {
-            dispatch(fetchDeleteFromFavorites(obj.id))
+        const findItem = favoriteItems.find((favObj) => favObj.id === obj.id)
+        if (findItem) {
+            dispatch(fetchDeleteFromFavorites(findItem.id))
 
         } else {
             dispatch(fetchAddToFavorites(obj))
@@ -70,6 +72,8 @@ function App() {
         <AppContext.Provider value={{
             hasCartItem,
             setShowCart,
+            addToFavorite,
+            addToCart
         }}>
             <div className="wrapper clear">
                 {showCart &&
